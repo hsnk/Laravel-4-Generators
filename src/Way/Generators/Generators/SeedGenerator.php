@@ -15,8 +15,10 @@ class SeedGenerator extends Generator {
     {
         $this->template = $this->file->get($template);
         $pluralModel = strtolower(str_replace('TableSeeder', '', $className));
+        $modelName=$this->str_lreplace('s', '', $pluralModel);
 
         $this->template = str_replace('{{className}}', $className, $this->template);
+        $this->template = str_replace('{{modelName}}', ucfirst($modelName), $this->template);
 
         return str_replace('{{pluralModel}}', $pluralModel, $this->template);
     }
@@ -36,4 +38,14 @@ class SeedGenerator extends Generator {
         $this->file->put($databaseSeederPath, $content);
     }
 
+    private function str_lreplace($search, $replace, $subject){
+        $pos = strrpos($subject, $search);
+
+        if($pos !== false)
+        {
+            $subject = substr_replace($subject, $replace, $pos, strlen($search));
+        }
+
+        return $subject;
+    }
 }
